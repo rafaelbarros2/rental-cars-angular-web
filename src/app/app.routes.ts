@@ -6,7 +6,6 @@ export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    // canActivate: [AuthGuard], // Descomente se o AuthGuard estiver ativo
     children: [
       {
         path: '',
@@ -19,13 +18,17 @@ export const routes: Routes = [
         title: 'Home'
       },
       {
-        path: 'relatorios', // Nova rota para o componente de relatórios
+        path: 'relatorios',
         loadComponent: () => import('./feature/reports/relatorios/relatorios.component').then(m => m.RelatoriosComponent),
         title: 'Relatórios'
+      },
+      {
+        path: 'alugueis-upload', 
+        loadComponent: () => import('./feature/rentals/upload-alugueis/upload-alugueis.component').then(m => m.UploadAlugueisComponent),
+        title: 'Upload de Aluguéis'
       }
     ]
   },
-  // Adicione outras rotas de nível superior aqui, como login, etc.
-  // { path: 'login', loadComponent: () => import('./feature/login/login.component').then(m => m.LoginComponent) },
-  { path: '**', redirectTo: 'home' } // Rota curinga para redirecionar para home
+
+  { path: '**', redirectTo: 'home' } 
 ];

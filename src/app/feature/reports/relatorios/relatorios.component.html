@@ -1,14 +1,14 @@
 <div class="content-wrapper">
-    <p-toast></p-toast> <!-- Componente para exibir toasts -->
-    <p-confirmDialog></p-confirmDialog> <!-- Componente para exibir diálogos de confirmação -->
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog> 
 
     <div class="content-header">
         <h1>Relatórios</h1>
         <p>Preencha o filtro para realizar uma pesquisa.</p>
     </div>
 
-    <div class="filters p-card"> <!-- Usando p-card para o estilo de caixa -->
-        <!-- Usando as novas classes do PrimeFlex: formgrid, grid, field, col, md:col -->
+    <div class="filters p-card"> 
+       
         <div class="formgrid grid">
             <div class="field col-12 md:col-2">
                 <label for="rentalDate">Data do aluguel</label>
@@ -18,13 +18,13 @@
                 <label for="carModel">Modelo do carro</label>
                 <p-dropdown id="carModel" [style]="{'width': '100%'}" [options]="carModels" [(ngModel)]="selectedCarModel" optionLabel="label" placeholder="Selecione um modelo"></p-dropdown>
             </div>
-            <div class="field col-3"> <!-- Alinha o botão ao final -->
+            <div class="field col-3"> 
                 <button pButton [ngClass]="'p-button-busca'" type="button" label="Buscar" icon="pi pi-search" (click)="buscar()"></button>
             </div>
         </div>
     </div>
 
-    <div class="data-table p-card"> <!-- Usando p-card para o estilo de caixa -->
+    <div class="data-table p-card"> 
         <p-table [value]="relatorios" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
                  [rowsPerPageOptions]="[10,25,50]" [tableStyle]="{'min-width': '50rem'}">
