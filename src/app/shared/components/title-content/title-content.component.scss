@@ -1,5 +1,17 @@
-.title {
-  font-size: 24px;
-  font-weight: 800;
-  color: #6495ED;
+.content-header {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--surface-border);
+    margin-bottom: 1rem;
+
+    h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #4264CD;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: var(--text-color-secondary);
+        margin: 0;
+    }
 }
