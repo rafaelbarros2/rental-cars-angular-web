@@ -1,0 +1,200 @@
+/* Estilos específicos para o componente RelatoriosComponent */
+
+.content-wrapper {
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.content-header {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--surface-border);
+    margin-bottom: 1rem;
+
+    h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #4264CD;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: var(--text-color-secondary);
+        margin: 0;
+    }
+}
+
+.filters {
+    background-color: var(--surface-card);
+    padding: 1rem;
+    border-radius: 3px;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    margin-bottom: 1.5rem;
+
+    .p-fluid .p-formgrid .p-field {
+        margin-bottom: 0; /* Ajusta a margem padrão do PrimeFlex */
+    }
+
+    /* Removido width: 100% daqui, será aplicado aos inputs/componentes dentro de .form-field */
+
+    /* Estilo para label, similar ao form-field.component.scss */
+    label {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #1D3374;
+        display: block; /* Garante que a label ocupe sua própria linha */
+        margin-bottom: 0.5rem;
+    }
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    /* Removido flex: 1; e min-width: 180px; para permitir que PrimeFlex controle a largura */
+}
+
+.form-field input[type="text"],
+.form-field input[type="date"],
+.form-field select,
+.p-calendar, /* Adicionado para garantir que o componente p-calendar ocupe 100% da largura de sua coluna */
+.p-dropdown { /* Adicionado para garantir que o componente p-dropdown ocupe 100% da largura de sua coluna */
+    font-family: var(--font-family);
+    font-size: 1rem;
+    color: var(--text-color);
+    background: var(--surface-a);
+    padding: 0.5rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 3px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%; /* Garante que os inputs e componentes PrimeNG preencham a largura de sua coluna */
+    box-sizing: border-box;
+}
+
+.form-field input[type="text"]:focus,
+.form-field input[type="date"]:focus,
+.form-field select:focus {
+    outline: 0 none;
+    box-shadow: var(--focus-ring);
+    border-color: var(--primary-500);
+}
+
+.search-button {
+    background-color: var(--primary-500);
+    color: var(--primary-color-text);
+    border: 1px solid var(--primary-500);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    white-space: nowrap; /* Evita que o texto "Buscar" quebre em várias linhas */
+}
+
+.search-button:hover {
+    background: #4869ce;
+    border-color: #4869ce;
+}
+
+/* Tabela de Dados */
+.data-table {
+    background-color: var(--surface-card);
+    border-radius: 3px;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    overflow-x: auto; /* Permite rolagem horizontal em telas pequenas */
+
+    .p-datatable {
+        .p-datatable-thead > tr > th {
+            background-color: var(--surface-b);
+            color: var(--text-color);
+            font-weight: 600;
+            border-bottom: 1px solid var(--surface-border);
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .p-datatable-tbody > tr > td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .p-datatable-tbody > tr:nth-child(even) {
+            background-color: var(--surface-b);
+        }
+
+        .p-datatable-tbody > tr:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .p-sortable-column-icon { /* Ícone de ordenação do PrimeNG */
+            color: var(--text-color-secondary);
+            margin-left: 0.5rem;
+        }
+
+        .p-sortable-column.p-highlight .p-sortable-column-icon {
+            color: var(--primary-color);
+        }
+    }
+}
+
+.status-tag {
+    padding: 0.25rem 0.6rem;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: inline-block;
+    color: white;
+}
+
+.status-sim {
+    background-color: #4CAF50;
+}
+
+.status-nao {
+    background-color: var(--red-500);
+}
+
+.table-footer {
+    background-color: var(--surface-b);
+    padding: 1rem;
+    text-align: right;
+    font-weight: 600;
+    color: var(--text-color);
+    border-top: 1px solid var(--surface-border);
+}
+
+/* Responsividade para o componente */
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 0.5rem; /* Menor padding em mobile */
+    }
+
+    .filters {
+        flex-direction: column; /* Filtros em coluna em telas pequenas */
+        align-items: stretch;
+    }
+
+    .p-col-12.p-md-4 { /* Ajusta a largura das colunas do PrimeFlex em mobile */
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .p-d-flex.p-jc-end.p-ai-end {
+        justify-content: center !important; /* Centraliza o botão em mobile */
+    }
+
+    .p-button {
+        width: 100%; /* Botão ocupa largura total em mobile */
+    }
+
+    .p-datatable-tbody > tr > td {
+        font-size: 0.9rem; /* Diminui a fonte da tabela em mobile */
+    }
+
+    .p-datatable-thead > tr > th {
+        font-size: 0.9rem;
+    }
+}
+
+::ng-deep .p-button-busca {
+    top: 1.5rem;
+}

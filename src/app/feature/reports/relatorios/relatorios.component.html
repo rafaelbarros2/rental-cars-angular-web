@@ -1,0 +1,77 @@
+<div class="content-wrapper">
+    <p-toast></p-toast> <!-- Componente para exibir toasts -->
+    <p-confirmDialog></p-confirmDialog> <!-- Componente para exibir diálogos de confirmação -->
+
+    <div class="content-header">
+        <h1>Relatórios</h1>
+        <p>Preencha o filtro para realizar uma pesquisa.</p>
+    </div>
+
+    <div class="filters p-card"> <!-- Usando p-card para o estilo de caixa -->
+        <!-- Usando as novas classes do PrimeFlex: formgrid, grid, field, col, md:col -->
+        <div class="formgrid grid">
+            <div class="field col-12 md:col-2">
+                <label for="rentalDate">Data do aluguel</label>
+                <p-calendar id="rentalDate" [(ngModel)]="rentalDate" dateFormat="dd/mm/yy" [showIcon]="true" inputId="icon"></p-calendar>
+            </div>
+            <div class="field col-12 md:col-2">
+                <label for="carModel">Modelo do carro</label>
+                <p-dropdown id="carModel" [style]="{'width': '100%'}" [options]="carModels" [(ngModel)]="selectedCarModel" optionLabel="label" placeholder="Selecione um modelo"></p-dropdown>
+            </div>
+            <div class="field col-3"> <!-- Alinha o botão ao final -->
+                <button pButton [ngClass]="'p-button-busca'" type="button" label="Buscar" icon="pi pi-search" (click)="buscar()"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table p-card"> <!-- Usando p-card para o estilo de caixa -->
+        <p-table [value]="relatorios" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                 [rowsPerPageOptions]="[10,25,50]" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="data">DATA <p-sortIcon field="data"></p-sortIcon></th>
+                    <th pSortableColumn="modelo">MODELO <p-sortIcon field="modelo"></p-sortIcon></th>
+                    <th pSortableColumn="km">KM <p-sortIcon field="km"></p-sortIcon></th>
+                    <th pSortableColumn="cliente">CLIENTE <p-sortIcon field="cliente"></p-sortIcon></th>
+                    <th pSortableColumn="telefone">TELEFONE <p-sortIcon field="telefone"></p-sortIcon></th>
+                    <th pSortableColumn="devolucao">DEVOLUÇÃO <p-sortIcon field="devolucao"></p-sortIcon></th>
+                    <th pSortableColumn="pago">PAGO <p-sortIcon field="pago"></p-sortIcon></th>
+                    <th pSortableColumn="valor">VALOR <p-sortIcon field="valor"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td>{{ item.data }}</td>
+                    <td>{{ item.modelo }}</td>
+                    <td>{{ item.km }}</td>
+                    <td>{{ item.cliente }}</td>
+                    <td>{{ item.telefone }}</td>
+                    <td>{{ item.devolucao }}</td>
+                    <td>
+                        <span [ngClass]="{'status-sim': item.pago, 'status-nao': !item.pago}" class="status-tag">
+                            {{ item.pago ? 'SIM' : 'NÃO' }}
+                        </span>
+                    </td>
+                    <td>{{ item.valor }}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <tr>
+                    <td colspan="8" class="table-footer">
+                        Soma de débitos : {{ totalDebitos }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<!-- Modal de Logout (substitui o alert) -->
+<p-dialog header="Confirmação de Saída" [(visible)]="displayLogoutModal" [modal]="true" [style]="{width: '30vw'}" [draggable]="false" [resizable]="false">
+    <p>Tem certeza que deseja sair?</p>
+    <ng-template pTemplate="footer">
+        <p-button label="Não" icon="pi pi-times" (onClick)="displayLogoutModal=false" styleClass="p-button-text"></p-button>
+        <p-button label="Sim" icon="pi pi-check" (onClick)="confirmLogout()"></p-button>
+    </ng-template>
+</p-dialog>
