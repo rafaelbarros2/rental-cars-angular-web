@@ -122,7 +122,7 @@ export class RelatoriosComponent implements OnInit {
 get totalDebitos(): string {
   const relatorios = this.relatorios() || [];
   const total = relatorios.reduce((sum, item) => {
-    if (item.pago === true) {
+    if (item.pago.toString() === "SIM") {
       return sum + Number(item.valor);
     }
     return sum;
