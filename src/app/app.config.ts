@@ -5,12 +5,14 @@ import { routes } from './app.routes';
 // import { KeycloakService } from 'keycloak-angular';
 // import { AuthGuard } from './core/auth/auth.guard';
 import { environment } from '../environments/environment';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
+    provideHttpClient(),
     // AuthGuard,
     // {
     //   provide: APP_INITIALIZER,

@@ -4,52 +4,92 @@
 
     <div class="content-header">
         <h1>Aluguéis</h1>
-        <!-- <p>Preencha o filtro para realizar uma pesquisa.</p> -->
     </div>
 
     <div class="upload-section p-card">
         <h2>Upload de arquivos</h2>
         <div class="upload-area"
-             (dragover)="onDragOver($event)"
-             (dragleave)="onDragLeave($event)"
-             (drop)="onDrop($event)">
-            <input #fileInput type="file" id="fileInput" accept=".rtn, image/*" (change)="onFileSelected($event)">
+     (dragover)="onDragOver($event)"
+     (dragleave)="onDragLeave($event)"
+     (drop)="onDrop($event)">
+    
+    <input #fileInput type="file" id="fileInput" accept=".rtn, image/*" (change)="onFileSelected($event)">
 
-            <div *ngIf="uploadState === UploadState.Initial" class="upload-initial-state">
-                <i class="fa fa-cloud-upload upload-icon"></i>
-                <p class="upload-text">Selecione ou arraste um arquivo <span style="color: red;">*</span></p>
-                <p class="upload-subtext">Tipo: RTN.<br>O tamanho do arquivo não pode ser maior que {{ MAX_FILE_SIZE_MB }}MB.</p>
-                <button pButton type="button" label="Selecionar" class="select-button" (click)="fileInput.click()"></button>
-            </div>
+    <!-- ✅ Estado inicial: sem arquivo -->
+    <div *ngIf="uploadStatus().state === 'idle' && ! getIsFileSelected()" class="upload-initial-state">
+        <i class="fa fa-cloud-upload upload-icon"></i>
+        <p class="upload-text">Selecione ou arraste um arquivo <span style="color: red;">*</span></p>
+        <p class="upload-subtext">Tipo: RTN.<br>O tamanho do arquivo não pode ser maior que {{ MAX_FILE_SIZE_MB }}MB.</p>
+        <button pButton type="button" label="Selecionar" class="select-button" (click)="fileInput.click()"></button>
+    </div>
 
-            <div *ngIf="uploadState === UploadState.Loading && selectedFile" class="upload-loading-state">
-                <div class="upload-file-info">
-                    <i class="fa fa-file-o file-icon"></i>
-                    <div class="file-details">
-                        <span class="file-name">{{ selectedFile.name }}</span>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" [style.width.%]="uploadProgress"></div>
-                        </div>
-                    </div>
-                </div>
-                <span class="file-size">{{ formatBytes(selectedFile.size) }}</span>
-            </div>
-
-            <div *ngIf="uploadState === UploadState.Success && selectedFile" class="upload-success-state">
-                <div class="upload-file-info">
-                    <i class="fa fa-file-o file-icon"></i>
-                    <div class="file-details">
-                        <span class="file-name">{{ selectedFile.name }}</span>
-                    </div>
-                </div>
-                <span class="file-size">{{ formatBytes(selectedFile.size) }}</span>
-                <i class="fa fa-trash trash-icon" (click)="removeFile(); $event.stopPropagation()"></i>
+    <div *ngIf="uploadStatus().state === 'idle' &&  getIsFileSelected()"  class="grid">
+        <div class="upload-file-info col-6">
+            <i class="fa fa-file-o file-icon"></i>
+            <div class="file-details">
+                <span class="file-name">{{ uploadStatus().filename }}</span>
             </div>
         </div>
-
-        <div class="process-button-container">
-            <button pButton type="button" label="Processar arquivo" class="process-button" [disabled]="uploadState !== UploadState.Success" (click)="processFile()"></button>
+        <div class="col-6 align-text-end">
+        <span class="file-size mr-2">{{ formatBytes(selectedFile?.size || 0) }}</span>
+        <i class="fa fa-trash trash-icon" (click)="removeFile(); $event.stopPropagation()"></i>
         </div>
+        
+    </div>
+
+    <!-- ✅ Processando -->
+    <div *ngIf="uploadStatus().state === 'uploading'" class="upload-loading-state">
+        <div class="upload-file-info">
+            <i class="fa fa-file-o file-icon"></i>
+            <div class="file-details">
+                <span class="file-name">{{ uploadStatus().filename }}</span>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" [style.width.%]="uploadStatus().progress"></div>
+                </div>
+            </div>
+        </div>
+        <span class="file-size">{{ formatBytes(selectedFile?.size || 0) }}</span>
+    </div>
+
+    <!-- ✅ Processamento concluído -->
+    <div *ngIf="uploadStatus().state === 'success' || uploadStatus().state === 'warning'" class="upload-success-state">
+        <div class="upload-file-info">
+            <i class="fa fa-file-o file-icon"></i>
+            <div class="file-details">
+                <span class="file-name">{{ uploadStatus().filename }}</span>
+                <span class="file-status">
+                    {{ uploadStatus().state === 'warning' ? 'Processado com warnings' : 'Processado com sucesso' }}
+                </span>
+            </div>
+        </div>
+        <span class="file-size">{{ formatBytes(selectedFile?.size || 0) }}</span>
+        <i class="fa fa-trash trash-icon" (click)="removeFile(); $event.stopPropagation()"></i>
+    </div>
+
+    <!-- ✅ Erro -->
+    <div *ngIf="uploadStatus().state === 'error'" class="upload-error-state">
+        <div class="upload-file-info">
+            <i class="fa fa-exclamation-triangle file-icon error"></i>
+            <div class="file-details">
+                <span class="file-name">{{ uploadStatus().filename }}</span>
+                <span class="file-status error">Erro no processamento</span>
+            </div>
+        </div>
+        <i class="fa fa-trash trash-icon" (click)="removeFile(); $event.stopPropagation()"></i>
+    </div>
+</div>
+
+<div class="process-button-container">
+    <button pButton 
+            type="button" 
+            label="Processar arquivo" 
+            class="process-button" 
+            [disabled]="!getIsFileSelected()|| uploadStatus().state === 'uploading'" 
+            [loading]="uploadStatus().state === 'uploading'"
+            (click)="processFile()">
+    </button>
+</div>
+
     </div>
 </div>
 

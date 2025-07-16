@@ -16,7 +16,7 @@
             </div>
             <div class="field col-12 md:col-2">
                 <label for="carModel">Modelo do carro</label>
-                <p-dropdown id="carModel" [style]="{'width': '100%'}" [options]="carModels" [(ngModel)]="selectedCarModel" optionLabel="label" placeholder="Selecione um modelo"></p-dropdown>
+                <p-dropdown id="carModel" [style]="{'width': '100%'}" [options]="carModelsOptions()" [(ngModel)]="selectedCarModel" optionLabel="label" placeholder="Selecione um modelo"></p-dropdown>
             </div>
             <div class="field col-3"> 
                 <button pButton [ngClass]="'p-button-busca'" type="button" label="Buscar" icon="pi pi-search" (click)="buscar()"></button>
@@ -24,33 +24,30 @@
         </div>
     </div>
 
-    <div class="data-table p-card"> 
-        <p-table [value]="relatorios" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
-                 [rowsPerPageOptions]="[10,25,50]" [tableStyle]="{'min-width': '50rem'}">
+    <div class="data-table p-card">
+    <p-table
+        [value]="relatorios()"
+        [paginator]="true"
+        [rows]="10"
+        [lazy]="true"
+        (onPage)="loadData($event)"
+        [totalRecords]="relatoriosTotalElements()" [loading]="relatoriosLoading()"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [tableStyle]="{'min-width': '50rem'}"
+    >
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="data">DATA <p-sortIcon field="data"></p-sortIcon></th>
-                    <th pSortableColumn="modelo">MODELO <p-sortIcon field="modelo"></p-sortIcon></th>
-                    <th pSortableColumn="km">KM <p-sortIcon field="km"></p-sortIcon></th>
-                    <th pSortableColumn="cliente">CLIENTE <p-sortIcon field="cliente"></p-sortIcon></th>
-                    <th pSortableColumn="telefone">TELEFONE <p-sortIcon field="telefone"></p-sortIcon></th>
-                    <th pSortableColumn="devolucao">DEVOLUÇÃO <p-sortIcon field="devolucao"></p-sortIcon></th>
-                    <th pSortableColumn="pago">PAGO <p-sortIcon field="pago"></p-sortIcon></th>
+                    <th pSortableColumn="dataAluguel">DATA <p-sortIcon field="dataAluguel"></p-sortIcon></th> <th pSortableColumn="modeloCarro">MODELO <p-sortIcon field="modeloCarro"></p-sortIcon></th> <th pSortableColumn="kmCarro">KM <p-sortIcon field="kmCarro"></p-sortIcon></th> <th pSortableColumn="nomeCliente">CLIENTE <p-sortIcon field="nomeCliente"></p-sortIcon></th> <th pSortableColumn="telefoneCliente">TELEFONE <p-sortIcon field="telefoneCliente"></p-sortIcon></th> <th pSortableColumn="dataDevolucao">DEVOLUÇÃO <p-sortIcon field="dataDevolucao"></p-sortIcon></th> <th pSortableColumn="pago">PAGO <p-sortIcon field="pago"></p-sortIcon></th>
                     <th pSortableColumn="valor">VALOR <p-sortIcon field="valor"></p-sortIcon></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td>{{ item.data }}</td>
-                    <td>{{ item.modelo }}</td>
-                    <td>{{ item.km }}</td>
-                    <td>{{ item.cliente }}</td>
-                    <td>{{ item.telefone }}</td>
-                    <td>{{ item.devolucao }}</td>
-                    <td>
-                        <span [ngClass]="{'status-sim': item.pago, 'status-nao': !item.pago}" class="status-tag">
-                            {{ item.pago ? 'SIM' : 'NÃO' }}
+                    <td>{{ item.dataAluguel }}</td> <td>{{ item.modeloCarro }}</td> <td>{{ item.kmCarro }}</td> <td>{{ item.nomeCliente }}</td> <td>{{ item.telefoneCliente }}</td> <td>{{ item.dataDevolucao }}</td> <td>
+                        <span [ngClass]="{'status-sim': item.pago === 'SIM', 'status-nao': item.pago === 'NAO'}" class="status-tag">
+                            {{ item.pago === 'SIM' ? 'SIM' : 'NÃO' }} 
                         </span>
                     </td>
                     <td>{{ item.valor }}</td>
